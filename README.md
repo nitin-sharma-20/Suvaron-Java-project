@@ -24,6 +24,27 @@
 
 ---
 
+
+
+## Features
+- **User Authentication and Authorization:** Securely sign up, sign in, and access the app with built-in authentication and authorization.
+- **CRUD Operations:** Perform essential financial tracking actions such as adding, reading, updating, and deleting expenses.
+- **Filtering:** Utilize the filtering feature to efficiently sort and view expenses based on various criteria.
+
+---
+
+## ScreenShots
+![Example Image](screenshots/1.png) <br>
+![Example Image](screenshots/2.png) <br>
+![Example Image](screenshots/3.png) <br>
+![Example Image](screenshots/4.png) <br>
+![Example Image](screenshots/5.png) <br>
+![Example Image](screenshots/6.png) <br>
+![Example Image](screenshots/7.png) <br>
+![Example Image](screenshots/8.png) <br>
+
+---
+
 ## 🛠️ Tech Stack & Architecture
 
 | Layer | Technology |
@@ -36,11 +57,6 @@
 | **Frontend** | Thymeleaf, Bootstrap |
 
 ---
-
-## Features
-- **User Authentication and Authorization:** Securely sign up, sign in, and access the app with built-in authentication and authorization.
-- **CRUD Operations:** Perform essential financial tracking actions such as adding, reading, updating, and deleting expenses.
-- **Filtering:** Utilize the filtering feature to efficiently sort and view expenses based on various criteria.
 
 ## Getting Started
 1. **Clone the Repository:**
@@ -59,15 +75,7 @@ Build the project using your preferred IDE or with Maven:
 5. **Access the App:**
 Open your web browser and navigate to `http://localhost:8080`.
 
-## ScreenShots
-![Example Image](screenshots/1.png) <br>
-![Example Image](screenshots/2.png) <br>
-![Example Image](screenshots/3.png) <br>
-![Example Image](screenshots/4.png) <br>
-![Example Image](screenshots/5.png) <br>
-![Example Image](screenshots/6.png) <br>
-![Example Image](screenshots/7.png) <br>
-![Example Image](screenshots/8.png) <br>
+
 
 
 
