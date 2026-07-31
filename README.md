@@ -1,23 +1,41 @@
-![Language](https://img.shields.io/badge/language-Java%20-blue.svg)
-![Technologies](https://img.shields.io/badge/technologies-Spring_boot%20-green.svg)
-![Technologies](https://img.shields.io/badge/technologies-Spring_MVC%20-green.svg)
-![Technologies](https://img.shields.io/badge/technologies-Spring_Security%20-green.svg)
-![Technologies](https://img.shields.io/badge/technologies-Spring_Data_jpa%20-green.svg)
-![Technologies](https://img.shields.io/badge/technologies-Thymeleaf_&_Bootstrap%20-purple.svg)
+<div align="center">
 
-# SUVARON an Expenses-Tracker-WebApp
-## Overview
-Suvaron is a financial management solution developed using robust technologies such as Spring Boot, Spring Security, and MySQL. With user authentication and authorization features, users can securely sign up, sign in, and perform CRUD operations on their expenses. The app's intuitive interface, powered by Thymeleaf and Bootstrap, ensures a seamless user experience. The filtering functionality allows users to efficiently organize and analyze their financial data. Explore the power of streamlined expense tracking and financial control with this feature-rich application.<br> (Screenshots below for more illustration)
+# SUVARON
+### *Take Control of Your Personal Finances*
 
-## Technologies Used
-- Java
-- Spring boot
-- Spring MVC
-- Spring Security
-- Spring Data (JPA)
-- MySQL
-- Thymeleaf
-- Bootstrap
+[![Java](https://img.shields.io/badge/Language-Java-007396?style=for-the-badge&logo=java&logoColor=white)](https://www.java.com)
+[![Spring Boot](https://img.shields.io/badge/Framework-Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![MySQL](https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
+[![Bootstrap](https://img.shields.io/badge/UI-Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
+
+</div>
+
+---
+
+## 💡 About The Project
+
+**Suvaron** is a full-stack expense tracking web application engineered to simplify financial management. It provides secure user management, real-time data analysis, and intuitive expense tracking in one unified dashboard.
+
+### ✨ Key Features
+* 🔒 **Role-Based Security:** Authentication & authorization powered by Spring Security.
+* 📝 **Full Expense CRUD:** Add, view, edit, and delete expense entries easily.
+* 🔍 **Smart Filtering:** Slice and analyze your spending data with fast query filters.
+* 📱 **Responsive UI:** Clean, modern interface built with Bootstrap and Thymeleaf.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+| Layer | Technology |
+| :--- | :--- |
+| **Language** | Java |
+| **Core Framework** | Spring Boot |
+| **Web / MVC** | Spring MVC |
+| **Security** | Spring Security |
+| **Persistence** | Spring Data JPA + MySQL |
+| **Frontend** | Thymeleaf, Bootstrap |
+
+---
 
 ## Features
 - **User Authentication and Authorization:** Securely sign up, sign in, and access the app with built-in authentication and authorization.
