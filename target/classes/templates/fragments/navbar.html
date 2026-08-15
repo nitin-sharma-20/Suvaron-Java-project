@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<nav class="navbar navbar-expand-lg fixed-top" id="mainNav"
+     th:fragment="navbar(showAbout, showIn, showUp, showList, showAdd, showProfile)">
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/}">Suvar<span>on</span></a>
+        <button class="navbar-toggler bg-primary text-white border-0" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
+                <li th:if="${showAbout == 'yes'}" class="nav-item"><a
+                        class="nav-link" href="/#about">Features</a></li>
+                <li th:if="${showIn == 'yes'}" class="nav-item"><a
+                        class="nav-link" th:href="@{/showLoginPage}">Log In</a></li>
+                <li th:if="${showUp == 'yes'}" class="nav-item"><a
+                        class="btn btn-outline-light ms-2 px-4" th:href="@{/showRegistrationForm}">Sign Up</a></li>
+                <li th:if="${showList == 'yes'}" class="nav-item"><a
+                        class="nav-link" th:href="@{/list}">Dashboard</a></li>
+                <li th:if="${showAdd == 'yes'}" class="nav-item"><a
+                        class="nav-link" th:href="@{/showAdd}">Add Expense</a></li>
+                <li th:if="${showProfile == 'yes'}" class="nav-item ms-3">
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="btn btn-primary d-flex align-items-center gap-2">
+                            <span>Logout</span>
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>

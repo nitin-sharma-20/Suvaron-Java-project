@@ -5,6 +5,7 @@ import com.SpringBootMVC.ExpensesTracker.DTO.FilterDTO;
 import com.SpringBootMVC.ExpensesTracker.entity.Category;
 import com.SpringBootMVC.ExpensesTracker.entity.Expense;
 import com.SpringBootMVC.ExpensesTracker.repository.ExpenseRepository;
+import com.SpringBootMVC.ExpensesTracker.repository.CategoryRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
@@ -18,14 +19,16 @@ public class ExpenseServiceImpl implements ExpenseService {
     ExpenseRepository expenseRepository;
     ClientService clientService;
     CategoryService categoryService;
+    CategoryRepository categoryRepository;
     EntityManager entityManager;
 
     @Autowired
     public ExpenseServiceImpl(ExpenseRepository expenseRepository, ClientService clientService
-            , CategoryService categoryService, EntityManager entityManager) {
+            , CategoryService categoryService, CategoryRepository categoryRepository, EntityManager entityManager) {
         this.expenseRepository = expenseRepository;
         this.clientService = clientService;
         this.categoryService = categoryService;
+        this.categoryRepository = categoryRepository;
         this.entityManager = entityManager;
     }
 
@@ -45,6 +48,11 @@ public class ExpenseServiceImpl implements ExpenseService {
         expense.setDescription(expenseDTO.getDescription());
         expense.setClient(clientService.findClientById(expenseDTO.getClientId()));
         Category category = categoryService.findCategoryByName(expenseDTO.getCategory());
+        if (category == null && expenseDTO.getCategory() != null) {
+            category = new Category();
+            category.setName(expenseDTO.getCategory());
+            category = categoryRepository.save(category);
+        }
         expense.setCategory(category);
         expenseRepository.save(expense);
     }
@@ -52,12 +60,19 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public void update(ExpenseDTO expenseDTO) {
         Expense existingExpense = expenseRepository.findById(expenseDTO.getExpenseId()).orElse(null);
-        existingExpense.setAmount(expenseDTO.getAmount());
-        existingExpense.setDateTime(expenseDTO.getDateTime());
-        existingExpense.setDescription(expenseDTO.getDescription());
-        Category category = categoryService.findCategoryByName(expenseDTO.getCategory());
-        existingExpense.setCategory(category);
-        expenseRepository.save(existingExpense);
+        if (existingExpense != null) {
+            existingExpense.setAmount(expenseDTO.getAmount());
+            existingExpense.setDateTime(expenseDTO.getDateTime());
+            existingExpense.setDescription(expenseDTO.getDescription());
+            Category category = categoryService.findCategoryByName(expenseDTO.getCategory());
+            if (category == null && expenseDTO.getCategory() != null) {
+                category = new Category();
+                category.setName(expenseDTO.getCategory());
+                category = categoryRepository.save(category);
+            }
+            existingExpense.setCategory(category);
+            expenseRepository.save(existingExpense);
+        }
     }
 
     @Override
@@ -76,25 +91,49 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public List<Expense> findFilterResult(FilterDTO filter) {
-        String query = "select e from Expense e where";
-        if (!"all".equals(filter.getCategory())) {
-            String category = filter.getCategory();
-            int categoryId = categoryService.findCategoryByName(category).getId();
-            query += String.format(" e.category.id = %d AND", categoryId);
+    public List<Expense> findFilterResult(FilterDTO filter, int clientId) {
+        StringBuilder queryStr = new StringBuilder("select e from Expense e where e.client.id = :clientId");
+
+        if (filter.getCategory() != null && !"all".equalsIgnoreCase(filter.getCategory())) {
+            queryStr.append(" AND lower(e.category.name) = lower(:category)");
         }
-        int from = filter.getFrom();
-        int to = filter.getTo();
-        query += String.format(" e.amount between %d and %d", from, to);
-        if (!"all".equals(filter.getYear())) {
-            query += String.format(" AND CAST(SUBSTRING(e.dateTime, 1, 4) AS INTEGER) = %s", filter.getYear());
+        if (filter.getFrom() > 0) {
+            queryStr.append(" AND e.amount >= :from");
         }
-        if (!"all".equals(filter.getMonth())) {
-            query += String.format(" AND CAST(SUBSTRING(e.dateTime, 6, 2) AS INTEGER) = %s", filter.getMonth());
+        if (filter.getTo() > 0) {
+            queryStr.append(" AND e.amount <= :to");
         }
-        TypedQuery<Expense> expenseTypedQuery = entityManager.createQuery(query, Expense.class);
-        List<Expense> expenseList = expenseTypedQuery.getResultList();
-        return expenseList;
+        if (filter.getYear() != null && !"all".equalsIgnoreCase(filter.getYear())) {
+            queryStr.append(" AND CAST(SUBSTRING(e.dateTime, 1, 4) AS INTEGER) = :year");
+        }
+        if (filter.getMonth() != null && !"all".equalsIgnoreCase(filter.getMonth())) {
+            queryStr.append(" AND CAST(SUBSTRING(e.dateTime, 6, 2) AS INTEGER) = :month");
+        }
+
+        TypedQuery<Expense> expenseTypedQuery = entityManager.createQuery(queryStr.toString(), Expense.class);
+        expenseTypedQuery.setParameter("clientId", clientId);
+
+        if (filter.getCategory() != null && !"all".equalsIgnoreCase(filter.getCategory())) {
+            expenseTypedQuery.setParameter("category", filter.getCategory());
+        }
+        if (filter.getFrom() > 0) {
+            expenseTypedQuery.setParameter("from", filter.getFrom());
+        }
+        if (filter.getTo() > 0) {
+            expenseTypedQuery.setParameter("to", filter.getTo());
+        }
+        if (filter.getYear() != null && !"all".equalsIgnoreCase(filter.getYear())) {
+            try {
+                expenseTypedQuery.setParameter("year", Integer.parseInt(filter.getYear()));
+            } catch (NumberFormatException ignored) {}
+        }
+        if (filter.getMonth() != null && !"all".equalsIgnoreCase(filter.getMonth())) {
+            try {
+                expenseTypedQuery.setParameter("month", Integer.parseInt(filter.getMonth()));
+            } catch (NumberFormatException ignored) {}
+        }
+
+        return expenseTypedQuery.getResultList();
     }
 
 
