@@ -31,7 +31,7 @@ public class CustomeAuthenticationSuccessHandler implements AuthenticationSucces
             , Authentication authentication) throws IOException, ServletException {
         String username = authentication.getName();
         User user = userService.findUserByUserName(username);
-        Client client = clientService.findClientById(user.getId());
+        Client client = (user != null) ? user.getClient() : null;
         HttpSession session = request.getSession();
         session.setAttribute("client", client);
         response.sendRedirect(request.getContextPath()+"/list");

@@ -56,6 +56,9 @@ public class MainController {
     @GetMapping("/list")
     public String list(Model model, HttpSession session){
         Client client = (Client) session.getAttribute("client");
+        if (client == null) {
+            return "redirect:/showLoginPage";
+        }
         int clientId = client.getId();
         List<Expense> expenseList = expenseService.findAllExpensesByClientId(clientId);
         for (Expense expense : expenseList){
