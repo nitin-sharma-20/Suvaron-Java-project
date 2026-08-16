@@ -69,13 +69,15 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUserName(username);
         if (user == null)
-            throw new UsernameNotFoundException("user not found");
-        return new CustomUserDetails(user.getUserName(), user.getPassword(),
-                mapRolesToAuthorityes(user.getRoles()), user.getClient().getId());
+            throw new UsernameNotFoundException("User not found: " + username);
+        int clientId = (user.getClient() != null) ? user.getClient().getId() : 0;
+        Collection<? extends GrantedAuthority> authorities =
+                (user.getRoles() != null) ? mapRolesToAuthorityes(user.getRoles()) : java.util.Collections.emptyList();
+        return new CustomUserDetails(user.getUserName(), user.getPassword(), authorities, clientId);
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorityes(Collection<Role> roles) {
-        return roles.stream().map(role->new SimpleGrantedAuthority(role.getName()))
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toList());
     }
 }
